@@ -1,11 +1,12 @@
 ﻿using FamilyTree.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Reflection.Metadata;
 
 namespace FamilyTree.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonPerson> PeoplePeople { get; set; }

@@ -1,12 +1,15 @@
 ﻿using FamilyTree.Dto;
 using FamilyTree.Models;
 using FamilyTree.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FamilyTree.Controllers
 {
+    [Authorize]
+    [Route("api/[controller]")]
     [ApiController]
-
+    
     public class PersonController : ControllerBase
     {
         private readonly IPersonRepository _repo;
@@ -17,18 +20,20 @@ namespace FamilyTree.Controllers
 
         [HttpGet("/father/{id}")]
 
-        public async Task<Person> Index(int id)
+        public async Task<Person> Father(int id)
         {
             return await _repo.showFather(id);
         }
 
 
+        [Authorize(Roles ="Admin")]
         [HttpGet("/people")]
         public async Task<dynamic> People()
         {
             return await _repo.getAll();
         }
 
+        [AllowAnonymous]
         [HttpGet("/mother/{id}")]
         public async Task<Person> Mother(int id)
         {

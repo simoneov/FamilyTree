@@ -33,15 +33,11 @@ namespace FamilyTree.Repositories.Implementations
         {
 
             return await Task.Run(() => {
-                var mother = _db.People.Where(p => p.Parents != null).Select
-            (a => new
-            {
-                Id = a.Id,
-                Mother = a.Parents!.SingleOrDefault(f => f.Parent.Sex == Sex.F)
-            }
-            ).FirstOrDefault(a => a.Id == id).Mother; 
-                
-             return mother?.Parent ?? new Person() { };
+                return (Person)_db.People.Where(x => x.Parents != null).Select(a => new
+                {
+                    PersonId = a.Id,
+                    Mother = a.Parents!.Select(b => b.Parent).SingleOrDefault(c => c.Sex == Sex.F)
+                }).SingleOrDefault(d => d.PersonId == id).Mother ?? new Person();
             } );
         }
 
